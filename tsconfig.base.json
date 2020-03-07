@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "esnext",
+        // "declaration": true,
+        // "declarationMap": true,
+        "downlevelIteration": true,
+        // "noImplicitAny": true,
+        "noUnusedParameters": false,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "target": "es5",
+        // "noUnusedLocals": true,
+        "skipLibCheck": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "lib": ["dom", "es2017"]
+    },
+    "exclude": ["../**/*.mocks.ts", "../**/*.spec.ts", "../**/*.spec.tsx"]
+}

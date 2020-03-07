@@ -1,0 +1,27 @@
+{
+    "name": "doppler",
+    "version": "0.1.0",
+    "useWorkspaces": true,
+    "description": "",
+    "scripts": {
+        "test-client": "",
+        "test-server": "",
+        "test": "npm run test-server & npm run test-client",
+        "server": "cd ./Server && npm run start",
+        "start": "cd ./Client && npm run start",
+        "clean": "lerna clean --yes && rm -rf node_modules",
+        "lint": "tslint --fix '**/*.ts{,x}' -e '**/**/*d.ts' -e '**/node_modules/**' -e '**/typings/**'",
+        "postinstall": "lerna bootstrap"
+    },
+    "author": "Matt King",
+    "license": "ISC",
+    "devDependencies": {
+        "lerna": "3.19.0",
+        "prettier": "1.19.1",
+        "tslint": "5.20.1",
+        "tslint-config-prettier": "1.18.0",
+        "tslint-eslint-rules": "5.4.0",
+        "tslint-plugin-prettier": "2.0.1",
+        "typescript": "3.7.3"
+    }
+}

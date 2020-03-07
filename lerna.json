@@ -1,0 +1,18 @@
+{
+    "lerna": "3.19.0",
+    "version": "0.1.0",
+    "npmClient": "npm",
+    "packages": ["Client/", "Server/"],
+    "command": {
+        "init": {
+            "exact": true
+        },
+        "publish": {
+            "exact": true
+        },
+        "bootstrap": {
+            "npmClient": "npm",
+            "npmClientArgs": ["--no-package-lock"]
+        }
+    }
+}
