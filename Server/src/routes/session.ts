@@ -6,17 +6,18 @@ const router = Router();
 
 router.post('/id=:sessionId', (req, res) => {
     const { sessionId } = req.params;
+    const { asset_name, device_id, email } = req.headers;
 
-    session.startSession(sessionId);
+    session.startSession(sessionId, asset_name as string, device_id as string, email as string);
     return res.send();
 });
 
-router.delete('/id=:sessionId/save=:shouldSave', async (req, res) => {
-    const { sessionId, shouldSave } = req.params;
+// router.delete('/id=:sessionId/save=:shouldSave', async (req, res) => {
+//     const { sessionId, shouldSave } = req.params;
 
-    await session.endSession(sessionId, Boolean(shouldSave));
-    return res.send();
-});
+//     await session.endSession(sessionId, Boolean(shouldSave));
+//     return res.send();
+// });
 
 router.post('/id=:sessionId/update', (req, res) => {
     const { sessionId } = req.params;
