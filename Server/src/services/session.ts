@@ -17,8 +17,14 @@ export class Session {
         });
     }
 
-    public startSession(sessionId: string, assetName: string, deviceId: string, email: string): void {
-        activeSessions.set(sessionId, { assetName: assetName, deviceId: deviceId, email: email, sessionData: [] });
+    public startSession(sessionId: string, assetName: string, deviceId: string, profileId: string, uid: string): void {
+        activeSessions.set(sessionId, {
+            assetName: assetName,
+            deviceId: deviceId,
+            email: profileId,
+            uid: uid,
+            sessionData: [],
+        });
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

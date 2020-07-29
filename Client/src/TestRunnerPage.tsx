@@ -81,31 +81,58 @@ export class TestRunnerPage extends React.Component<any, any> {
         return this.state.loading ? (
             <Spinner animation="grow" />
         ) : (
-            <div>
-                <h3>
-                    {this.state.selectedThrottleProfile.title
-                        ? this.state.selectedThrottleProfile.title
-                        : 'Please Select A Profile'}
-                </h3>
-                {this.renderTestingProfiles()}
-                {this.state.selectedThrottleProfile.title && (
-                    <div>
-                        <Chart
-                            chartType="AreaChart"
-                            width="91%"
-                            height="400px"
-                            data={this.adaptThrottleData(this.state.selectedThrottleProfile.data)}
-                            options={{
-                                title: 'Throttle Profile',
-                                vAxis: { title: 'Avalibale Bandwith (KBPS)' },
-                                curveType: 'none',
-                                legend: {
-                                    position: 'none',
-                                },
-                                backgroundColor: 'none',
-                                interpolateNulls: true,
-                                vAxes: {
-                                    0: {
+                <div>
+                    <h3>
+                        {this.state.selectedThrottleProfile.title
+                            ? this.state.selectedThrottleProfile.title
+                            : 'Please Select A Profile'}
+                    </h3>
+                    {this.renderTestingProfiles()}
+                    {this.state.selectedThrottleProfile.title && (
+                        <div>
+                            <Chart
+                                chartType="AreaChart"
+                                width="91%"
+                                height="400px"
+                                data={this.adaptThrottleData(this.state.selectedThrottleProfile.data)}
+                                options={{
+                                    title: 'Throttle Profile',
+                                    vAxis: { title: 'Avalibale Bandwith (KBPS)' },
+                                    curveType: 'none',
+                                    legend: {
+                                        position: 'none',
+                                    },
+                                    backgroundColor: 'none',
+                                    interpolateNulls: true,
+                                    vAxes: {
+                                        0: {
+                                            viewWindow: {
+                                                min: 0,
+                                                max: '',
+                                            },
+                                            textPosition: 'none',
+                                            gridlines: {
+                                                color: 'transparent',
+                                            },
+                                            baseline: 1,
+                                            baselineColor: 'transparent',
+                                        },
+                                        1: {
+                                            viewWindow: {
+                                                min: 0,
+                                                max: '',
+                                            },
+                                            textPosition: 'none',
+                                            gridlines: {
+                                                color: 'transparent',
+                                            },
+                                            baseline: 1,
+                                            baselineColor: 'transparent',
+                                        },
+                                    },
+                                    pointSize: 5,
+                                    hAxis: {
+                                        title: 'Duration (Mins)',
                                         viewWindow: {
                                             min: 0,
                                             max: '',
@@ -117,57 +144,36 @@ export class TestRunnerPage extends React.Component<any, any> {
                                         baseline: 1,
                                         baselineColor: 'transparent',
                                     },
-                                    1: {
-                                        viewWindow: {
-                                            min: 0,
-                                            max: '',
-                                        },
-                                        textPosition: 'none',
-                                        gridlines: {
-                                            color: 'transparent',
-                                        },
-                                        baseline: 1,
-                                        baselineColor: 'transparent',
+                                    series: {
+                                        // 0: {
+                                        //     color: '#25F5AB',
+                                        //     targetAxisIndex: 1,
+                                        // },
+                                        // 1: {
+                                        //     color: '#F4FF00',
+                                        //     targetAxisIndex: 1,
+                                        // },
                                     },
-                                },
-                                pointSize: 5,
-                                hAxis: {
-                                    title: 'Duration (Mins)',
-                                    viewWindow: {
-                                        min: 0,
-                                        max: '',
+                                    chartArea: {
+                                        left: 80,
+                                        top: 30,
+                                        width: '100%',
+                                        height: '70%',
                                     },
-                                    textPosition: 'none',
-                                    gridlines: {
-                                        color: 'transparent',
-                                    },
-                                    baseline: 1,
-                                    baselineColor: 'transparent',
-                                },
-                                series: {
-                                    // 0: {
-                                    //     color: '#25F5AB',
-                                    //     targetAxisIndex: 1,
-                                    // },
-                                    // 1: {
-                                    //     color: '#F4FF00',
-                                    //     targetAxisIndex: 1,
-                                    // },
-                                },
-                                chartArea: {
-                                    left: 80,
-                                    top: 30,
-                                    width: '100%',
-                                    height: '70%',
-                                },
-                                tooltip: { isHtml: true },
-                            }}
-                            legendToggle
-                        />
-                        <h5>Input IP address:</h5>
-                    </div>
-                )}
-            </div>
-        );
+                                    tooltip: { isHtml: true },
+                                }}
+                                legendToggle
+                            />
+                            <h1> Throttle Server </h1>
+                            <h5> Server address:</h5>
+                            <input placeholder={'192.168.0.1'} onChangeCapture={event => console.log(event)} />
+                            <h5>Port:</h5>
+                            <input placeholder={'1080'} />
+                            <h5>Profile ID:</h5>
+                            <input placeholder={'matthew.king4@sky.uk'} />
+                        </div>
+                    )}
+                </div>
+            );
     }
 }
