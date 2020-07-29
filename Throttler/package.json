@@ -1,0 +1,36 @@
+{
+  "name": "throttler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "throttler.js",
+  "scripts": {
+    "start": "node throttler.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sitespeed.io/throttle": "^1.0.3",
+    "child_process": "^1.0.2",
+    "crapify": "^1.2.0",
+    "events": "^3.1.0",
+    "express": "^4.17.1",
+    "http-proxy": "^1.18.1",
+    "https-proxy-agent": "^5.0.0",
+    "lodash": "^4.17.19",
+    "minimist": "^1.2.5",
+    "net": "^1.0.2",
+    "node": "^14.5.0",
+    "node-global-proxy": "^1.0.1",
+    "rocky": "^0.4.15",
+    "simple-socks": "^2.0.1",
+    "socks-proxy-agent": "^5.0.0",
+    "socksv5": "0.0.6",
+    "throttle": "^1.0.3",
+    "throttle-proxy": "^2.3.1",
+    "tls": "0.0.1",
+    "toxy": "^0.3.16",
+    "url": "^0.11.0",
+    "ws": "^7.3.1"
+  }
+}

@@ -11,8 +11,10 @@ export class TestRunnerPage extends React.Component<any, any> {
                     id: 0,
                     title: 'Some Profile',
                     data: [
-                        { position: 0, bandwidth: 5000 },
-                        { position: 5000, bandwidth: 1000 },
+                        { position: 0, bandwidth: 4000 },
+                        { position: 60, bandwidth: 4000 },
+                        { position: 60, bandwidth: 3000 },
+                        { position: 120, bandwidth: 3000 },
                     ],
                 },
                 {
@@ -65,7 +67,7 @@ export class TestRunnerPage extends React.Component<any, any> {
 
     renderTestingProfiles() {
         return (
-            <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+            <DropdownButton id="dropdown-basic-button" title="Throttle Profiles">
                 <Dropdown.Item onClick={() => this.selectProfile({})}>Create a new throttling Profile</Dropdown.Item>
                 <Dropdown.Divider />
                 {this.state.throttlingProfiles.map((profile: any) => (
@@ -87,22 +89,50 @@ export class TestRunnerPage extends React.Component<any, any> {
                 </h3>
                 {this.renderTestingProfiles()}
                 {this.state.selectedThrottleProfile.title && (
-                    <Chart
-                        chartType="AreaChart"
-                        width="91%"
-                        height="400px"
-                        data={this.adaptThrottleData(this.state.selectedThrottleProfile.data)}
-                        options={{
-                            title: 'Throttle Profile',
-                            vAxis: { title: 'Avalibale Bandwith (KBPS)' },
-                            curveType: 'none',
-                            legend: {
-                                position: 'none',
-                            },
-                            backgroundColor: 'none',
-                            interpolateNulls: true,
-                            vAxes: {
-                                0: {
+                    <div>
+                        <Chart
+                            chartType="AreaChart"
+                            width="91%"
+                            height="400px"
+                            data={this.adaptThrottleData(this.state.selectedThrottleProfile.data)}
+                            options={{
+                                title: 'Throttle Profile',
+                                vAxis: { title: 'Avalibale Bandwith (KBPS)' },
+                                curveType: 'none',
+                                legend: {
+                                    position: 'none',
+                                },
+                                backgroundColor: 'none',
+                                interpolateNulls: true,
+                                vAxes: {
+                                    0: {
+                                        viewWindow: {
+                                            min: 0,
+                                            max: '',
+                                        },
+                                        textPosition: 'none',
+                                        gridlines: {
+                                            color: 'transparent',
+                                        },
+                                        baseline: 1,
+                                        baselineColor: 'transparent',
+                                    },
+                                    1: {
+                                        viewWindow: {
+                                            min: 0,
+                                            max: '',
+                                        },
+                                        textPosition: 'none',
+                                        gridlines: {
+                                            color: 'transparent',
+                                        },
+                                        baseline: 1,
+                                        baselineColor: 'transparent',
+                                    },
+                                },
+                                pointSize: 5,
+                                hAxis: {
+                                    title: 'Duration (Mins)',
                                     viewWindow: {
                                         min: 0,
                                         max: '',
@@ -114,53 +144,28 @@ export class TestRunnerPage extends React.Component<any, any> {
                                     baseline: 1,
                                     baselineColor: 'transparent',
                                 },
-                                1: {
-                                    viewWindow: {
-                                        min: 0,
-                                        max: '',
-                                    },
-                                    textPosition: 'none',
-                                    gridlines: {
-                                        color: 'transparent',
-                                    },
-                                    baseline: 1,
-                                    baselineColor: 'transparent',
+                                series: {
+                                    // 0: {
+                                    //     color: '#25F5AB',
+                                    //     targetAxisIndex: 1,
+                                    // },
+                                    // 1: {
+                                    //     color: '#F4FF00',
+                                    //     targetAxisIndex: 1,
+                                    // },
                                 },
-                            },
-                            pointSize: 5,
-                            hAxis: {
-                                title: 'Duration (Mins)',
-                                viewWindow: {
-                                    min: 0,
-                                    max: '',
+                                chartArea: {
+                                    left: 80,
+                                    top: 30,
+                                    width: '100%',
+                                    height: '70%',
                                 },
-                                textPosition: 'none',
-                                gridlines: {
-                                    color: 'transparent',
-                                },
-                                baseline: 1,
-                                baselineColor: 'transparent',
-                            },
-                            series: {
-                                // 0: {
-                                //     color: '#25F5AB',
-                                //     targetAxisIndex: 1,
-                                // },
-                                // 1: {
-                                //     color: '#F4FF00',
-                                //     targetAxisIndex: 1,
-                                // },
-                            },
-                            chartArea: {
-                                left: 80,
-                                top: 30,
-                                width: '100%',
-                                height: '70%',
-                            },
-                            tooltip: { isHtml: true },
-                        }}
-                        legendToggle
-                    />
+                                tooltip: { isHtml: true },
+                            }}
+                            legendToggle
+                        />
+                        <h5>Input IP address:</h5>
+                    </div>
                 )}
             </div>
         );
