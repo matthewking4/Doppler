@@ -6,25 +6,27 @@ const router = Router();
 
 router.post('/id=:sessionId', (req, res) => {
     const { sessionId } = req.params;
-
-    session.startSession(sessionId);
+    const { asset_name, device_id, profileId, uid } = req.body;
+    console.log("HIT", req.body)
+    session.startSession(sessionId, asset_name, device_id, profileId, uid);
     return res.send();
 });
 
-router.delete('/id=:sessionId/save=:shouldSave', async (req, res) => {
-    const { sessionId, shouldSave } = req.params;
+// router.delete('/id=:sessionId/save=:shouldSave', async (req, res) => {
+//     const { sessionId, shouldSave } = req.params;
 
-    await session.endSession(sessionId, Boolean(shouldSave));
-    return res.send();
-});
+//     await session.endSession(sessionId, Boolean(shouldSave));
+//     return res.send();
+// });
 
 router.post('/id=:sessionId/update', (req, res) => {
     const { sessionId } = req.params;
-    const sessionProps = {
-        playerState: 'Playing',
-        position: '0',
-        bitrate: 4200,
-    };
+    const { sessionProps } = req.body;
+    // const sessionProps = {
+    //     playerState: 'Playing',
+    //     position: '0',
+    //     bitrate: 4200,
+    // };
 
     session.updateSession(sessionId, sessionProps);
 
