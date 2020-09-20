@@ -28,7 +28,7 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            activeSessionId: this.props.match.params || null,
+            activeSessionId: this.props.match.params || this.props.activeSessionId ||null,
             assetData: {},
             error: false,
             loading: true,
@@ -36,24 +36,25 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
     }
 
     componentDidMount() {
-        const { id } = this.props.match.params;
+        console.log(this.props)
+        const id = this.props.match.params.id || this.props.activeSessionId;
         this.setState({ activeSessionId: id });
-
-        fetch(`http://localhost:443/session/${id}`).then((response) => response.json()).then((response) => this.setState({ assetData: response, loading: false }))
+        console.log(id)
+        fetch(`http://localhost:443/session/${id}`).then((response) => response.json()).then((response) => this.setState({ assetData: response, loading: false })).catch(() => this.setState({ loading: false }))
         setInterval(() => {
             this.updateSessionData();
         }, 2000);
     }
 
     updateSessionData() {
-        fetch(`http://localhost:443/session/${this.state.activeSessionId}`).then((response) => response.json()).then((response) => this.setState({ assetData: response, loading: false }))
+        fetch(`http://localhost:443/session/${this.state.activeSessionId}`).then((response) => response.json()).then((response) => this.setState({ assetData: response, loading: false })).catch(() => this.setState({ loading: false }))
     }
 
 
     adaptThrottleData(assetData: any) {
         let adaptedAssetData = [['Position', 'bitrate']];
-        assetData.sessionData.map((data: any) => adaptedAssetData.push([data.position, data.bitrate.bitrateKbps]));
         console.log(assetData);
+        assetData.sessionData && assetData.sessionData.map((data: any) => adaptedAssetData.push([data?.position, data.bitrate?.bitrateKbps]));
         return adaptedAssetData;
     }
 

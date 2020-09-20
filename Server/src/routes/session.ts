@@ -4,32 +4,24 @@ import { session } from '../services/session';
 
 const router = Router();
 
-router.post('/id=:sessionId', (req, res) => {
-    const { sessionId } = req.params;
-    const { asset_name, device_id, profileId, uid } = req.body;
-    console.log("HIT", req.body)
-    session.startSession(sessionId, asset_name, device_id, profileId, uid);
+router.post('/id=:accountId', (req, res) => {
+    const { accountId } = req.params;
+    const { asset_name, device_id, uid } = req.body;
+    session.startSession(accountId, asset_name, device_id, uid);
     return res.send();
 });
 
-// router.delete('/id=:sessionId/save=:shouldSave', async (req, res) => {
+// router.delete('/id=:accountId/save=:shouldSave', async (req, res) => {
 //     const { sessionId, shouldSave } = req.params;
 
 //     await session.endSession(sessionId, Boolean(shouldSave));
 //     return res.send();
 // });
 
-router.post('/id=:sessionId/update', (req, res) => {
-    const { sessionId } = req.params;
+router.post('/id=:accountId/update', (req, res) => {
+    const { accountId } = req.params;
     const { sessionProps } = req.body;
-    // const sessionProps = {
-    //     playerState: 'Playing',
-    //     position: '0',
-    //     bitrate: 4200,
-    // };
-
-    session.updateSession(sessionId, sessionProps);
-
+    session.updateSession(accountId, sessionProps);
     return res.send();
 });
 
@@ -37,10 +29,10 @@ router.get('/active', (req, res) => {
     return res.send(session.getSessions());
 });
 
-router.get('/:sessionId', (req, res) => {
-    const { sessionId } = req.params;
+router.get('/:accountId', (req, res) => {
+    const { accountId } = req.params;
 
-    return res.send(session.getSession(sessionId));
+    return res.send(session.getSession(accountId));
 });
 
 export const sessionRouter = router;

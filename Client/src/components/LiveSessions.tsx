@@ -32,7 +32,7 @@ export class LiveSessions extends React.Component<any, LiveSessionState> {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Session ID</th>
+                            <th>Account ID</th>
                             <th>Asset</th>
                             <th>Device</th>
                             <th>Email</th>
@@ -40,8 +40,8 @@ export class LiveSessions extends React.Component<any, LiveSessionState> {
                     </thead>
                     <tbody>
                         {this.state.activeSessions.map((asset: any) => (
-                            <tr onClick={() => this.setState({ selectedSessionId: asset?.sessionId })}>
-                                <td>{asset?.sessionId}</td>
+                            <tr onClick={() => this.setState({ selectedSessionId: asset?.accountId })}>
+                                <td>{asset?.accountId}</td>
                                 <td>{asset?.assetName}</td>
                                 <td>{asset?.deviceId}</td>
                                 <td>{asset?.email}</td>

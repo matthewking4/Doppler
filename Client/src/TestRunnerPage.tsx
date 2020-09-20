@@ -1,6 +1,7 @@
 import React from 'react';
 import { DropdownButton, Dropdown, Spinner } from 'react-bootstrap';
 import Chart from 'react-google-charts';
+import { SessionTracker } from './components/SessionTracker';
 
 export class TestRunnerPage extends React.Component<any, any> {
     constructor(props: any) {
@@ -170,7 +171,9 @@ export class TestRunnerPage extends React.Component<any, any> {
                             <h5>Port:</h5>
                             <input placeholder={'1080'} />
                             <h5>Profile ID:</h5>
-                            <input placeholder={'matthew.king4@sky.uk'} />
+                            <input placeholder={'matthew.king4@sky.uk'} onChange={e => this.setState({accountId: e.target.value})} />
+                            <button onClick={() => this.setState({start: true})}> Start </button>
+                            {this.state.start && <SessionTracker activeSessionId={this.state.accountId} />}
                         </div>
                     )}
                 </div>

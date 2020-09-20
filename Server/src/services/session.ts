@@ -8,34 +8,34 @@ const activeSessions = new Map();
 export class Session {
     //this method needs to expand to containt structured sessionProps, one of which should be the active state & bitrate...
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public updateSession(sessionId: string, sessionProps: any): void {
-        const existingSessionData = activeSessions.get(sessionId).sessionData;
+    public updateSession(accountId: string, sessionProps: any): void {
+        const existingSessionData = activeSessions.get(accountId).sessionData;
 
-        activeSessions.set(sessionId, {
-            ...activeSessions.get(sessionId),
+        activeSessions.set(accountId, {
+            ...activeSessions.get(accountId),
             sessionData: [...existingSessionData, { ...sessionProps }],
         });
     }
 
-    public startSession(sessionId: string, assetName: string, deviceId: string, profileId: string, uid: string): void {
-        activeSessions.set(sessionId, {
+    public startSession(accountId: string, assetName: string, deviceId: string, uid: string): void {
+        activeSessions.set(accountId, {
             assetName: assetName,
             deviceId: deviceId,
-            email: profileId,
+            email: accountId,
             uid: uid,
             sessionData: [],
         });
     }
 
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public getSession(sessionId: string) {
-        return activeSessions.get(sessionId);
+    public getSession(accountId: string) {
+        return activeSessions.get(accountId);
     }
 
     public getSessions(): Array<any> {
         const sessionKeys: Array<any> = [];
         for (const [key, { assetName, deviceId, email }] of activeSessions) {
-            sessionKeys.push({ sessionId: key, assetName, deviceId, email });
+            sessionKeys.push({ accountId: key, assetName, deviceId, email });
         }
         return sessionKeys;
     }
