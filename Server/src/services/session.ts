@@ -11,7 +11,6 @@ export class Session {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public updateSession(accountId: string, sessionProps: any): void {
         const existingSessionData = activeSessions.get(accountId).sessionData;
-        console.log(activeSessions.get(accountId));
         activeSessions.set(accountId, {
             ...activeSessions.get(accountId),
             sessionData: [...existingSessionData, { ...sessionProps }],
@@ -45,13 +44,20 @@ export class Session {
     public async endSession(accountId: string, shouldSave = false): Promise<string | boolean> {
         if (shouldSave) {
             try {
-                await Sessions.create(activeSessions.get(accountId));
+                await Sessions.create({ ...activeSessions.get(accountId), date: Date() });
             } catch (err) {
                 return err;
             }
         }
-
         return activeSessions.delete(accountId);
+    }
+
+    public async getSavedSessions(): Promise<Array<any>> {
+        try {
+            return await Sessions.find();
+        } catch (err) {
+            return err;
+        }
     }
 }
 

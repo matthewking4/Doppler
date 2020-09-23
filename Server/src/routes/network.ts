@@ -14,9 +14,13 @@ router.get('/profiles', async (req, res) => {
                 title: 'Default 1',
                 data: [
                     { position: 0, bandwidth: 4000 },
-                    { position: 60, bandwidth: 4000 },
-                    { position: 60, bandwidth: 3000 },
-                    { position: 120, bandwidth: 3000 },
+                    { position: 2, bandwidth: 4000 },
+                    { position: 2, bandwidth: 3000 },
+                    { position: 4, bandwidth: 3000 },
+                    { position: 4, bandwidth: 9000 },
+                    { position: 6, bandwidth: 9000 },
+                    { position: 6, bandwidth: 1000 },
+                    { position: 10, bandwidth: 1000 },
                 ],
             },
             {

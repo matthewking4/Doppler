@@ -11,12 +11,17 @@ router.post('/id=:accountId', (req, res) => {
     return res.send();
 });
 
-// router.delete('/id=:accountId/save=:shouldSave', async (req, res) => {
-//     const { sessionId, shouldSave } = req.params;
+router.delete('/id=:accountId/save=:shouldSave', async (req, res) => {
+    const { accountId, shouldSave } = req.params;
 
-//     await session.endSession(sessionId, Boolean(shouldSave));
-//     return res.send();
-// });
+    await session.endSession(accountId, Boolean(shouldSave));
+    return res.send();
+});
+
+router.get('/results', async (req, res) => {
+    const result = await session.getSavedSessions();
+    return res.send(result);
+});
 
 router.post('/id=:accountId/update', (req, res) => {
     const { accountId } = req.params;

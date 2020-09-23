@@ -18,13 +18,11 @@ export class LiveSessions extends React.Component<any, LiveSessionState> {
         fetch('http://localhost:443/session/active')
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
                 this.setState({ loading: false, activeSessions: response });
             });
     }
 
     render() {
-        console.log(this.state);
         return this.state.loading ? (
             <Spinner animation="grow" />
         ) : (

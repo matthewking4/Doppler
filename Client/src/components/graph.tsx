@@ -6,6 +6,7 @@ type GraphProps = {
     vTitle: string;
     hTitle: string;
     data: Array<any>;
+    maxTimespan?: number | null,
 };
 
 export class Graph extends React.Component<GraphProps, any> {
@@ -23,7 +24,7 @@ export class Graph extends React.Component<GraphProps, any> {
     }
 
     render() {
-        const { title, vTitle, hTitle, data } = this.props;
+        const { title, vTitle, hTitle, data, maxTimespan } = this.props;
         return (
             <div>
                 {this.state.error ? (
@@ -32,7 +33,7 @@ export class Graph extends React.Component<GraphProps, any> {
                     <div className="App">
                         <Chart
                             chartType="AreaChart"
-                            width="91%"
+                            width="99%"
                             height="400px"
                             data={data}
                             options={{
@@ -50,7 +51,7 @@ export class Graph extends React.Component<GraphProps, any> {
                                             min: 0,
                                             max: '',
                                         },
-                                        textPosition: 'none',
+                                        // textPosition: 'none',
                                         gridlines: {
                                             color: 'transparent',
                                         },
@@ -62,7 +63,7 @@ export class Graph extends React.Component<GraphProps, any> {
                                             min: 0,
                                             max: '',
                                         },
-                                        textPosition: 'none',
+                                        // textPosition: 'none',
                                         gridlines: {
                                             color: 'transparent',
                                         },
@@ -75,9 +76,9 @@ export class Graph extends React.Component<GraphProps, any> {
                                     title: hTitle,
                                     viewWindow: {
                                         min: 0,
-                                        max: '',
+                                        max: maxTimespan || '',
                                     },
-                                    textPosition: 'none',
+                                    // textPosition: 'none',
                                     gridlines: {
                                         color: 'transparent',
                                     },
@@ -85,14 +86,14 @@ export class Graph extends React.Component<GraphProps, any> {
                                     baselineColor: 'transparent',
                                 },
                                 series: {
-                                    // 0: {
-                                    //     color: '#25F5AB',
-                                    //     targetAxisIndex: 1,
-                                    // },
-                                    // 1: {
-                                    //     color: '#F4FF00',
-                                    //     targetAxisIndex: 1,
-                                    // },
+                                    0: {
+                                        color: '#25F5AB',
+                                        // targetAxisIndex: 1,
+                                    },
+                                    1: {
+                                        color: '#F4FF00',
+                                        targetAxisIndex: 1,
+                                    },
                                 },
                                 chartArea: {
                                     left: 80,

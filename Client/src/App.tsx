@@ -1,11 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Navbar, Nav, Jumbotron } from 'react-bootstrap';
-import { LiveSessions } from './components/LiveSessions';
+import { LiveSessions } from './page/LiveSessions';
 import { SessionTracker } from './components/SessionTracker';
-import { TestRunnerPage } from './TestRunnerPage';
+import { TestRunnerPage } from './page/TestRunnerPage';
 import './App.css';
+import { SavedResults } from './page/savedResultsPage';
 
 const NavBar = (
     <Navbar bg="light" expand="lg">
@@ -13,12 +13,12 @@ const NavBar = (
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-                <Nav.Link href="/test">New Device Test</Nav.Link>
+                <Nav.Link href="/test">Test a Device</Nav.Link>
                 <Nav.Link href="/live">Live Sessions</Nav.Link>
                 <Nav.Link href="/results">Saved Results</Nav.Link>
             </Nav>
             <Nav>
-                <Nav.Link href="/info">Info</Nav.Link>
+                <Nav.Link href="/info">Information</Nav.Link>
             </Nav>
         </Navbar.Collapse>
     </Navbar>
@@ -48,7 +48,7 @@ export class Doppler extends React.Component {
                     <SessionTracker />
                 </Route>
                 <Route path="/results">
-                    <h1>results</h1>
+                    <SavedResults />
                 </Route>
             </BrowserRouter>
         );
