@@ -1,34 +1,26 @@
 import React from 'react';
-import { Spinner, Table } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
-import Chart from 'react-google-charts';
+import { Graph } from './graph';
 
 type LiveSessionState = {
     loading: boolean;
     error: boolean;
     activeSessionId: string | null;
     assetData: any;
+    shouldEnd: boolean;
+    endOfProfileInSec: any;
     // options: any;
     // series: any;
-};
-const data = [
-    ['Year', 'Sales', 'Expenses'],
-    ['2004', 1000, 400],
-    ['2005', 1170, 460],
-    ['2006', 660, 1120],
-    ['2007', 1030, 540],
-];
-const options = {
-    title: 'Company Performance',
-    curveType: 'function',
-    legend: { position: 'bottom' },
 };
 
 class LiveSessionTracker extends React.Component<any, LiveSessionState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            activeSessionId: this.props.match.params || null,
+            activeSessionId: this.props.match.params || this.props.activeSessionId || null,
+            endOfProfileInSec: null,
+            shouldEnd: false,
             assetData: {},
             error: false,
             loading: true,
@@ -36,26 +28,49 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
     }
 
     componentDidMount() {
-        const { id } = this.props.match.params;
-        this.setState({ activeSessionId: id });
-
-        fetch(`http://localhost:443/session/${id}`).then((response) => response.json()).then((response) => this.setState({ assetData: response, loading: false }))
+        const data = this.props.networkProfile?.data;
+        const id = this.props.match.params.id || this.props.activeSessionId;
+        this.setState({ activeSessionId: id, endOfProfileInSec: data ? data[data.length - 1].position * 60 : null });
+        fetch(`http://localhost:443/session/${id}`)
+            .then((response) => response.json())
+            .then((response) => this.setState({ assetData: response, loading: false }))
+            .catch(() => this.setState({ loading: false }));
         setInterval(() => {
             this.updateSessionData();
         }, 2000);
     }
 
     updateSessionData() {
-        fetch(`http://localhost:443/session/${this.state.activeSessionId}`).then((response) => response.json()).then((response) => this.setState({ assetData: response, loading: false }))
+        if (this.state.endOfProfileInSec && this.state.assetData) {
+            const lastPosition =
+                this.state.assetData.sessionData &&
+                this.state.assetData.sessionData[this.state.assetData.sessionData.length - 1].position;
+            lastPosition >= this.state.endOfProfileInSec && this.setState({ shouldEnd: true });
+        }
+        fetch(`http://localhost:443/session/${this.state.activeSessionId}`)
+            .then((response) => response.json())
+            .then((response) => this.setState({ assetData: response, loading: false }))
+            .catch(() => this.setState({ loading: false }));
     }
 
+    componentWillUpdate() {
+        this.props.shouldSave && this.saveResults();
+    }
 
     adaptThrottleData(assetData: any) {
         let adaptedAssetData = [['Position', 'bitrate']];
-        assetData.sessionData.map((data: any) => adaptedAssetData.push([data.position, data.bitrate.bitrateKbps]));
-        console.log(assetData);
+        assetData.sessionData &&
+            assetData.sessionData.map((data: any) =>
+                adaptedAssetData.push([data?.position / 60, data.bitrate?.bitrateKbps]),
+            );
         return adaptedAssetData;
     }
+
+    saveResults = () => {
+        fetch(`http://localhost:443/session/id=${this.state.activeSessionId}/save=true`, {
+            method: 'DELETE',
+        });
+    };
 
     render() {
         return (
@@ -65,83 +80,22 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
                 ) : this.state.loading ? (
                     <Spinner animation="grow" />
                 ) : (
-                            <div className="App">
-                                <Chart
-                                    chartType="AreaChart"
-                                    width="91%"
-                                    height="400px"
-                                    data={this.adaptThrottleData(this.state.assetData)}
-                                    options={{
-                                        title: 'Player Profiler',
-                                        vAxis: { title: 'Current Bandwith (KBPS)' },
-                                        curveType: 'none',
-                                        legend: {
-                                            position: 'none',
-                                        },
-                                        backgroundColor: 'none',
-                                        interpolateNulls: true,
-                                        vAxes: {
-                                            0: {
-                                                viewWindow: {
-                                                    min: 0,
-                                                    max: '',
-                                                },
-                                                textPosition: 'none',
-                                                gridlines: {
-                                                    color: 'transparent',
-                                                },
-                                                baseline: 1,
-                                                baselineColor: 'transparent',
-                                            },
-                                            1: {
-                                                viewWindow: {
-                                                    min: 0,
-                                                    max: '',
-                                                },
-                                                textPosition: 'none',
-                                                gridlines: {
-                                                    color: 'transparent',
-                                                },
-                                                baseline: 1,
-                                                baselineColor: 'transparent',
-                                            },
-                                        },
-                                        pointSize: 5,
-                                        hAxis: {
-                                            title: 'Position in Stream',
-                                            viewWindow: {
-                                                min: 0,
-                                                max: '',
-                                            },
-                                            textPosition: 'none',
-                                            gridlines: {
-                                                color: 'transparent',
-                                            },
-                                            baseline: 1,
-                                            baselineColor: 'transparent',
-                                        },
-                                        series: {
-                                            // 0: {
-                                            //     color: '#25F5AB',
-                                            //     targetAxisIndex: 1,
-                                            // },
-                                            // 1: {
-                                            //     color: '#F4FF00',
-                                            //     targetAxisIndex: 1,
-                                            // },
-                                        },
-                                        chartArea: {
-                                            left: 80,
-                                            top: 30,
-                                            width: '100%',
-                                            height: '70%',
-                                        },
-                                        tooltip: { isHtml: true },
-                                    }}
-                                    legendToggle
-                                />                    
+                    <div>
+                        {this.state.shouldEnd && (
+                            <div>
+                                <h1>Your network profile has come to an end. Do you wish to save your results?</h1>
+                                <button onClick={this.saveResults}> Save </button>
                             </div>
                         )}
+                        <Graph
+                            data={this.adaptThrottleData(this.state.assetData)}
+                            title="Player Profiler"
+                            vTitle="Current Bandwith (KBPS)"
+                            hTitle="Position in Stream"
+                            maxTimespan={this.state.endOfProfileInSec / 60}
+                        />
+                    </div>
+                )}
             </div>
         );
     }

@@ -12,6 +12,7 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+.google-visualization-tooltip { width:100px; }
 
 .App-header {
   background-color: #282c34;
