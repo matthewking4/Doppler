@@ -1,3 +1,12 @@
 import { Schema } from 'mongoose';
 
-export const sessionSchema = {} as Schema;
+export const sessionSchema = new Schema({
+    email: {
+        type: String,
+        required: true,
+    },
+    sessionData: {
+        type: [{ bitrate: { bitrateKbps: Number }, position: Number }],
+        required: true,
+    },
+});

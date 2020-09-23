@@ -7,42 +7,16 @@ export class TestRunnerPage extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {
-            throttlingProfiles: [
-                {
-                    id: 0,
-                    title: 'Some Profile',
-                    data: [
-                        { position: 0, bandwidth: 4000 },
-                        { position: 60, bandwidth: 4000 },
-                        { position: 60, bandwidth: 3000 },
-                        { position: 120, bandwidth: 3000 },
-                    ],
-                },
-                {
-                    id: 1,
-                    title: 'Some Profile 2',
-                    data: [
-                        { position: 0, bandwidth: 4000 },
-                        { position: 60, bandwidth: 4000 },
-                        { position: 60, bandwidth: 3000 },
-                        { position: 120, bandwidth: 3000 },
-                        { position: 120, bandwidth: 4000 },
-                        { position: 180, bandwidth: 4000 },
-                        { position: 180, bandwidth: 2000 },
-                        { position: 200, bandwidth: 2000 },
-                    ],
-                },
-            ],
+            throttlingProfiles: [],
             loading: false,
             selectedThrottleProfile: {},
         };
     }
 
     componentDidMount() {
-        fetch('http://localhost:443/throttle/profiles')
+        fetch('http://localhost:443/network/profiles')
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
                 this.setState({ loading: false, throttlingProfiles: response });
             });
     }
@@ -62,7 +36,6 @@ export class TestRunnerPage extends React.Component<any, any> {
     adaptThrottleData(throttleData: any) {
         let adaptedThrottleData = [['Position', 'Bandwith']];
         throttleData.map((data: any) => adaptedThrottleData.push([data.position, data.bandwidth]));
-        console.log(throttleData);
         return adaptedThrottleData;
     }
 

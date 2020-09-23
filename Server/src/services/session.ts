@@ -1,8 +1,9 @@
 //import mongoose from 'mongoose';
 
 import { sessionSchema } from '../schemas/sessionSchema';
+import mongoose from 'mongoose';
 
-//const storedSessions = mongoose.model('session', sessionSchema);
+const Sessions = mongoose.model('session', sessionSchema);
 const activeSessions = new Map();
 
 export class Session {
@@ -10,7 +11,7 @@ export class Session {
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     public updateSession(accountId: string, sessionProps: any): void {
         const existingSessionData = activeSessions.get(accountId).sessionData;
-
+        console.log(activeSessions.get(accountId));
         activeSessions.set(accountId, {
             ...activeSessions.get(accountId),
             sessionData: [...existingSessionData, { ...sessionProps }],
@@ -23,7 +24,7 @@ export class Session {
             deviceId: deviceId,
             email: accountId,
             uid: uid,
-            sessionData: [],
+            sessionData: [{ bitrate: { bitrateKbps: 0 }, position: 0 }],
         });
     }
 
@@ -32,6 +33,7 @@ export class Session {
         return activeSessions.get(accountId);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public getSessions(): Array<any> {
         const sessionKeys: Array<any> = [];
         for (const [key, { assetName, deviceId, email }] of activeSessions) {
@@ -40,17 +42,17 @@ export class Session {
         return sessionKeys;
     }
 
-    // public async endSession(sessionId: string, shouldSave = false): Promise<string | boolean> {
-    //     if (shouldSave) {
-    //         try {
-    //             await storedSessions.create(sessionId, activeSessions.get(sessionId));
-    //         } catch (err) {
-    //             return err;
-    //         }
-    //     }
+    public async endSession(accountId: string, shouldSave = false): Promise<string | boolean> {
+        if (shouldSave) {
+            try {
+                await Sessions.create(activeSessions.get(accountId));
+            } catch (err) {
+                return err;
+            }
+        }
 
-    //     return activeSessions.delete(sessionId);
-    // }
+        return activeSessions.delete(accountId);
+    }
 }
 
 export const session = new Session();
