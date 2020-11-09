@@ -5,6 +5,13 @@ export const sessionSchema = new Schema({
         type: String,
         required: true,
     },
+    deviceName: {
+        type: String,
+    },
+    playerName: {
+        type: String,
+        required: true,
+    },
     deviceId: {
         type: String,
         required: true,

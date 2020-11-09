@@ -7,6 +7,7 @@ type GraphProps = {
     hTitle: string;
     data: Array<any>;
     maxTimespan?: number | null,
+    maxBitrate?: any | null,
 };
 
 export class Graph extends React.Component<GraphProps, any> {
@@ -17,14 +18,14 @@ export class Graph extends React.Component<GraphProps, any> {
         };
     }
 
-    componentDidUpdate(prevProps: GraphProps, prevState: any) {
+    componentDidUpdate() {
         if (this.props.data.length > 1 && this.state.error) {
             this.setState({ error: false });
         }
     }
 
     render() {
-        const { title, vTitle, hTitle, data, maxTimespan } = this.props;
+        const { title, vTitle, hTitle, data, maxTimespan, maxBitrate } = this.props;
         return (
             <div>
                 {this.state.error ? (
@@ -35,10 +36,11 @@ export class Graph extends React.Component<GraphProps, any> {
                             chartType="AreaChart"
                             width="99%"
                             height="400px"
+                            style={{position: 'absolute'}}
                             data={data}
                             options={{
-                                title: title,
-                                vAxis: { title: vTitle },
+                                // title: title,
+                                // vAxis: { title: vTitle },
                                 curveType: 'none',
                                 legend: {
                                     position: 'none',
@@ -51,7 +53,7 @@ export class Graph extends React.Component<GraphProps, any> {
                                             min: 0,
                                             max: '',
                                         },
-                                        // textPosition: 'none',
+                                        textPosition: 'none',
                                         gridlines: {
                                             color: 'transparent',
                                         },
@@ -61,9 +63,9 @@ export class Graph extends React.Component<GraphProps, any> {
                                     1: {
                                         viewWindow: {
                                             min: 0,
-                                            max: '',
+                                            max: maxBitrate,
                                         },
-                                        // textPosition: 'none',
+                                        textPosition: 'none',
                                         gridlines: {
                                             color: 'transparent',
                                         },
@@ -73,12 +75,12 @@ export class Graph extends React.Component<GraphProps, any> {
                                 },
                                 pointSize: 5,
                                 hAxis: {
-                                    title: hTitle,
+                                    // title: hTitle,
                                     viewWindow: {
                                         min: 0,
                                         max: maxTimespan || '',
                                     },
-                                    // textPosition: 'none',
+                                    textPosition: 'none',
                                     gridlines: {
                                         color: 'transparent',
                                     },
@@ -88,17 +90,17 @@ export class Graph extends React.Component<GraphProps, any> {
                                 series: {
                                     0: {
                                         color: '#25F5AB',
-                                        // targetAxisIndex: 1,
+                                        targetAxisIndex: 1
                                     },
                                     1: {
                                         color: '#F4FF00',
-                                        targetAxisIndex: 1,
-                                    },
+                                        targetAxisIndex: 1
+                                    }
                                 },
                                 chartArea: {
                                     left: 80,
                                     top: 30,
-                                    width: '100%',
+                                    width: '92%',
                                     height: '70%',
                                 },
                                 tooltip: { isHtml: true },
@@ -108,25 +110,7 @@ export class Graph extends React.Component<GraphProps, any> {
                                     eventName: 'error',
                                     callback: () => this.setState({ error: true }),
                                 },
-                                // {
-                                //     eventName: 'statechange',
-                                //     callback: () => console.log("....statechange"),
-                                // },
-                                // {
-                                //     eventName: 'ok',
-                                //     callback: () => console.log("....ok"),
 
-                                // },
-                                // {
-                                //     eventName: 'ready',
-                                //     callback: () => console.log("....ready"),
-
-                                // },
-                                // {
-                                //     eventName: 'select',
-                                //     callback: () => console.log("....select"),
-
-                                // }
                             ]}
                             legendToggle
                         />

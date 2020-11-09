@@ -1,8 +1,76 @@
+
+a{
+  color: #a2b5cb !important;
+}
+.navbar-brand{
+  color: white !important;
+}
 .App {
   text-align: center;
 }
+.Nav-bar {
+  background-color: #22272e !important;
+  /* background-color: #31373f !important; */
+  color: white !important;
+}
+.Side-bar {
+  width: 15%;
+  height: 100vh;
+  background-color: #22272e;
+  float: left;
+  text-align: center;
+  overflow: scroll;
+  color: #a2b5cb;
+  
+}
 
-.App-logo {
+.Side-bar p{
+  margin-bottom: 0%;;
+}
+
+hr {
+  width: 94%;
+  opacity: 0.4;
+  border-color: #8797aa !important;
+  margin-top: 0% !important;
+}
+
+.Side-bar input{
+  width: 80%;
+  background-color: #31373f;
+  border: 0;
+  height: 35px;
+  border-radius: 8px;
+  color: #8797aa;
+  font-size: 0.8rem;
+  padding-left: 13%;
+  margin-bottom: 4%;
+}
+
+.Main-content{
+  width: 85%;
+  height: 100vh;
+  float: left;
+  background-color: #31373f !important;
+}
+
+/* Override Bootstrap */
+.navbar .navbar-brand {
+  color: #fff;
+}
+.btn-primary {
+  width: 80% !important;
+  background-color: #31373f !important;
+  border: 0 !important;
+  height: 35px !important;
+  border-radius: 8px !important;
+  color: #8797aa !important;
+  font-size: 0.8rem !important;
+  padding-left: 20px !important;
+  margin-bottom: 5px !important;
+}
+/* //////////////////// */
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -36,4 +104,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

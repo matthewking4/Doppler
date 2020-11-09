@@ -6,8 +6,8 @@ const router = Router();
 
 router.post('/id=:accountId', (req, res) => {
     const { accountId } = req.params;
-    const { asset_name, device_id, uid } = req.body;
-    session.startSession(accountId, asset_name, device_id, uid);
+    const { asset_name, device_name, device_id, player_name, uid } = req.body;
+    session.startSession(accountId, asset_name, device_name, device_id, player_name, uid);
     return res.send();
 });
 
@@ -26,8 +26,8 @@ router.get('/results', async (req, res) => {
 router.post('/id=:accountId/update', (req, res) => {
     const { accountId } = req.params;
     const { sessionProps } = req.body;
-    session.updateSession(accountId, sessionProps);
-    return res.send();
+    const update = session.updateSession(accountId, sessionProps);
+    return res.send(update ? 200 : 205);
 });
 
 router.get('/active', (req, res) => {

@@ -9,18 +9,31 @@ const activeSessions = new Map();
 export class Session {
     //this method needs to expand to containt structured sessionProps, one of which should be the active state & bitrate...
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public updateSession(accountId: string, sessionProps: any): void {
-        const existingSessionData = activeSessions.get(accountId).sessionData;
-        activeSessions.set(accountId, {
-            ...activeSessions.get(accountId),
-            sessionData: [...existingSessionData, { ...sessionProps }],
-        });
+    public updateSession(accountId: string, sessionProps: any): boolean {
+        const existingSessionData = activeSessions.get(accountId)?.sessionData;
+        if (existingSessionData) {
+            activeSessions.set(accountId, {
+                ...activeSessions.get(accountId),
+                sessionData: [...existingSessionData, { ...sessionProps }],
+            });
+            return true;
+        }
+        return false;
     }
 
-    public startSession(accountId: string, assetName: string, deviceId: string, uid: string): void {
+    public startSession(
+        accountId: string,
+        assetName: string,
+        deviceName: string,
+        deviceId: string,
+        playerName: string,
+        uid: string,
+    ): void {
         activeSessions.set(accountId, {
             assetName: assetName,
+            deviceName: deviceName,
             deviceId: deviceId,
+            playerName: playerName,
             email: accountId,
             uid: uid,
             sessionData: [{ bitrate: { bitrateKbps: 0 }, position: 0 }],
@@ -35,8 +48,8 @@ export class Session {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public getSessions(): Array<any> {
         const sessionKeys: Array<any> = [];
-        for (const [key, { assetName, deviceId, email }] of activeSessions) {
-            sessionKeys.push({ accountId: key, assetName, deviceId, email });
+        for (const [key, { assetName, deviceName, deviceId, playerName, email }] of activeSessions) {
+            sessionKeys.push({ accountId: key, assetName, deviceName, deviceId, playerName, email });
         }
         return sessionKeys;
     }

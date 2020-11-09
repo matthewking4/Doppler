@@ -7,7 +7,7 @@ import { sessionRouter } from './routes/session';
 import { networkRouter } from './routes/network';
 
 const app: express.Application = express();
-const PORT = 443;
+const PORT = 8443;
 
 app.set('json spaces', 2);
 

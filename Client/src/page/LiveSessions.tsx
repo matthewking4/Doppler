@@ -15,7 +15,7 @@ export class LiveSessions extends React.Component<any, LiveSessionState> {
     }
 
     componentDidMount() {
-        fetch('http://localhost:443/session/active')
+        fetch('http://localhost:8443/session/active')
             .then((response) => response.json())
             .then((response) => {
                 this.setState({ loading: false, activeSessions: response });
@@ -32,6 +32,7 @@ export class LiveSessions extends React.Component<any, LiveSessionState> {
                         <tr>
                             <th>Account ID</th>
                             <th>Asset</th>
+                            <th>Player</th>
                             <th>Device</th>
                             <th>Email</th>
                         </tr>
@@ -41,7 +42,8 @@ export class LiveSessions extends React.Component<any, LiveSessionState> {
                             <tr onClick={() => this.setState({ selectedSessionId: asset?.accountId })}>
                                 <td>{asset?.accountId}</td>
                                 <td>{asset?.assetName}</td>
-                                <td>{asset?.deviceId}</td>
+                                <td>{asset?.playerName}</td>
+                                <td>{asset?.deviceName}</td>
                                 <td>{asset?.email}</td>
                             </tr>
                         ))}

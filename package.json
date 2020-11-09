@@ -7,9 +7,7 @@
         "test-client": "",
         "test-server": "",
         "test": "npm run test-server & npm run test-client",
-        "start:server": "cd ./Server && npm run start",
-        "start:client": "cd ./Client && npm run start",
-        "start": "concurrently --kill-others \"npm run start:client\" \"npm run start:server\"",
+        "start": "concurrently --kill-others \"npm run start --prefix Client\" \"npm run start --prefix Server\"  \"npm run start --prefix Throttler\"",
         "clean": "lerna clean --yes && rm -rf node_modules",
         "lint": "eslint */**/*.{js,ts,tsx} --fix",
         "postinstall": "lerna bootstrap"

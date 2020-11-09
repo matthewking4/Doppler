@@ -13,7 +13,7 @@ export class SavedResults extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        fetch('http://localhost:443/session/results')
+        fetch('http://localhost:8443/session/results')
             .then((response) => response.json())
             .then((response) => {
                 this.setState({ loading: false, results: response });
@@ -31,6 +31,7 @@ export class SavedResults extends React.Component<any, any> {
                             <tr>
                                 <th>Email</th>
                                 <th>Asset</th>
+                                <th>Player</th>
                                 <th>Device</th>
                                 <th>Date</th>
                             </tr>
@@ -40,7 +41,8 @@ export class SavedResults extends React.Component<any, any> {
                                 <tr onClick={() => this.setState({ selectedAsset: asset })}>
                                     <td>{asset?.email}</td>
                                     <td>{asset?.assetName}</td>
-                                    <td>{asset?.deviceId}</td>
+                                    <td>{asset?.playerName}</td>
+                                    <td>{asset?.deviceName}</td>
                                     <td>{asset?.date}</td>
                                 </tr>
                             ))}
