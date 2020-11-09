@@ -2,7 +2,7 @@
     "lerna": "3.19.0",
     "version": "0.1.0",
     "npmClient": "npm",
-    "packages": ["Client/", "Server/"],
+    "packages": ["Client/", "Server/", "Throttler/"],
     "command": {
         "init": {
             "exact": true

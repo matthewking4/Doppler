@@ -61,15 +61,15 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds - hours * 3600) / 60);
         const seconds = Math.floor(totalSeconds) % 60;
-    
+
         const twoDigitSeconds = `0${seconds}`.substr(-2);
         const twoDigitMinutes = `0${minutes}`.substr(-2);
-    
+
         return hours ? `${hours}:${twoDigitMinutes}:${twoDigitSeconds}` : `${minutes}:${twoDigitSeconds}`;
     };
 
     adaptThrottleData(assetData: any) {
-        let adaptedAssetData = [['Position', 'bitrate', {role: 'tooltip', type: 'string'}]] as any;
+        let adaptedAssetData = [['Position', 'bitrate', { role: 'tooltip', type: 'string' }]] as any;
         const maxBitrate =
             assetData.sessionData &&
             Math.max(
@@ -77,23 +77,23 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
                     const bitrate = data.bitrate?.bitrateKbps
                     const playerState = data.playerState
                     if (playerState === 'PlayerLoading') return
-                    adaptedAssetData.push([data?.position /60, bitrate, `Position: ${this.formatTime(data?.position)}\nBitrate: ${bitrate}\nState: ${playerState}`]);
+                    adaptedAssetData.push([data?.position / 60, bitrate, `Position: ${this.formatTime(data?.position)}\nBitrate: ${bitrate}\nState: ${playerState}`]);
                     return data.bitrate?.bitrateKbps;
                 }),
                 0,
             );
-            console.log("this.props.throttleManager", this.props.throttleManager)
+        console.log("this.props.throttleManager", this.props.throttleManager)
         // this.props.throttleManager &&  this.props.throttleManager.updateThrottleProxy(assetData.sessionData);
         this.props.setMaxBitrate && maxBitrate && this.setMaxBitrate(maxBitrate)
         return adaptedAssetData;
     }
-    
+
 
     setMaxBitrate(kbps: number) {
         kbps += kbps * 0.20;
         if (this.state.maxBitrate !== kbps) {
             this.props.setMaxBitrate(kbps)
-            this.setState({maxBitrate: kbps})
+            this.setState({ maxBitrate: kbps })
         }
     }
 
@@ -111,23 +111,23 @@ class LiveSessionTracker extends React.Component<any, LiveSessionState> {
                 ) : this.state.loading ? (
                     <Spinner animation="grow" />
                 ) : (
-                    <div>
-                        {this.state.shouldEnd && (
                             <div>
-                                <h1>Your network profile has come to an end. Do you wish to save your results?</h1>
-                                <button onClick={this.saveResults}> Save </button>
+                                {this.state.shouldEnd && (
+                                    <div>
+                                        <h1>Your network profile has come to an end. Do you wish to save your results?</h1>
+                                        <button onClick={this.saveResults}> Save </button>
+                                    </div>
+                                )}
+                                <Graph
+                                    data={this.adaptThrottleData(this.state.assetData)}
+                                    title="Player Profiler"
+                                    vTitle="Current Bandwith (KBPS)"
+                                    hTitle="Position in Stream"
+                                    maxTimespan={this.state.endOfProfileInSec / 60}
+                                    maxBitrate={this.state.maxBitrate}
+                                />
                             </div>
                         )}
-                        <Graph
-                            data={this.adaptThrottleData(this.state.assetData)}
-                            title="Player Profiler"
-                            vTitle="Current Bandwith (KBPS)"
-                            hTitle="Position in Stream"
-                            maxTimespan={this.state.endOfProfileInSec / 60}
-                            maxBitrate={this.state.maxBitrate}
-                        />
-                    </div>
-                )}
             </div>
         );
     }

@@ -19,7 +19,7 @@ a{
   background-color: #22272e;
   float: left;
   text-align: center;
-  overflow: scroll;
+  /* overflow: scroll; */
   color: #a2b5cb;
   
 }

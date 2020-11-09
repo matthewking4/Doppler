@@ -31,27 +31,54 @@ export class Graph extends React.Component<GraphProps, any> {
                 {this.state.error ? (
                     <h1>No data found. Please start your playback session </h1>
                 ) : (
-                    <div className="App">
-                        <Chart
-                            chartType="AreaChart"
-                            width="99%"
-                            height="400px"
-                            style={{position: 'absolute'}}
-                            data={data}
-                            options={{
-                                // title: title,
-                                // vAxis: { title: vTitle },
-                                curveType: 'none',
-                                legend: {
-                                    position: 'none',
-                                },
-                                backgroundColor: 'none',
-                                interpolateNulls: true,
-                                vAxes: {
-                                    0: {
+                        <div className="App">
+                            <Chart
+                                chartType="AreaChart"
+                                width="99%"
+                                height="400px"
+                                style={{ position: 'absolute' }}
+                                data={data}
+                                options={{
+                                    title: title,
+                                    vAxis: { title: vTitle },
+                                    curveType: 'none',
+                                    legend: {
+                                        position: 'none',
+                                    },
+                                    backgroundColor: 'none',
+                                    interpolateNulls: true,
+                                    vAxes: {
+                                        0: {
+                                            viewWindow: {
+                                                min: 0,
+                                                max: '',
+                                            },
+                                            textPosition: 'none',
+                                            gridlines: {
+                                                color: 'transparent',
+                                            },
+                                            baseline: 1,
+                                            baselineColor: 'transparent',
+                                        },
+                                        1: {
+                                            viewWindow: {
+                                                min: 0,
+                                                max: maxBitrate,
+                                            },
+                                            textPosition: 'none',
+                                            gridlines: {
+                                                color: 'transparent',
+                                            },
+                                            baseline: 1,
+                                            baselineColor: 'transparent',
+                                        },
+                                    },
+                                    pointSize: 5,
+                                    hAxis: {
+                                        title: hTitle,
                                         viewWindow: {
                                             min: 0,
-                                            max: '',
+                                            max: maxTimespan || '',
                                         },
                                         textPosition: 'none',
                                         gridlines: {
@@ -60,62 +87,35 @@ export class Graph extends React.Component<GraphProps, any> {
                                         baseline: 1,
                                         baselineColor: 'transparent',
                                     },
-                                    1: {
-                                        viewWindow: {
-                                            min: 0,
-                                            max: maxBitrate,
+                                    series: {
+                                        0: {
+                                            color: '#25F5AB',
+                                            targetAxisIndex: 1
                                         },
-                                        textPosition: 'none',
-                                        gridlines: {
-                                            color: 'transparent',
-                                        },
-                                        baseline: 1,
-                                        baselineColor: 'transparent',
+                                        1: {
+                                            color: '#F4FF00',
+                                            targetAxisIndex: 1
+                                        }
                                     },
-                                },
-                                pointSize: 5,
-                                hAxis: {
-                                    // title: hTitle,
-                                    viewWindow: {
-                                        min: 0,
-                                        max: maxTimespan || '',
+                                    chartArea: {
+                                        left: 80,
+                                        top: 30,
+                                        width: '92%',
+                                        height: '70%',
                                     },
-                                    textPosition: 'none',
-                                    gridlines: {
-                                        color: 'transparent',
+                                    tooltip: { isHtml: true },
+                                }}
+                                chartEvents={[
+                                    {
+                                        eventName: 'error',
+                                        callback: () => this.setState({ error: true }),
                                     },
-                                    baseline: 1,
-                                    baselineColor: 'transparent',
-                                },
-                                series: {
-                                    0: {
-                                        color: '#25F5AB',
-                                        targetAxisIndex: 1
-                                    },
-                                    1: {
-                                        color: '#F4FF00',
-                                        targetAxisIndex: 1
-                                    }
-                                },
-                                chartArea: {
-                                    left: 80,
-                                    top: 30,
-                                    width: '92%',
-                                    height: '70%',
-                                },
-                                tooltip: { isHtml: true },
-                            }}
-                            chartEvents={[
-                                {
-                                    eventName: 'error',
-                                    callback: () => this.setState({ error: true }),
-                                },
 
-                            ]}
-                            legendToggle
-                        />
-                    </div>
-                )}
+                                ]}
+                                legendToggle
+                            />
+                        </div>
+                    )}
             </div>
         );
     }

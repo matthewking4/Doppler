@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, NavLink, Route } from 'react-router-dom';
 import { Navbar, Nav, Jumbotron } from 'react-bootstrap';
-import { LiveSessions } from './page/LiveSessions';
+import { LivePage } from './page/LivePage';
 import { SessionTracker } from './components/SessionTracker';
-import { TestRunnerPage } from './page/TestRunnerPage';
+import { TestPage } from './page/TestPage';
 import './App.css';
-import { SavedResults } from './page/savedResultsPage';
+import { ResultsPage } from './page/ResultsPage';
 
 const NavBar = (
     <Navbar className="Nav-bar" expand="lg">
@@ -53,16 +53,16 @@ export class Doppler extends React.Component {
                         </Jumbotron>
                     </Route>
                     <Route path="/test">
-                        <TestRunnerPage />
+                        <TestPage />
                     </Route>
                     <Route path="/live" exact>
-                        <LiveSessions />
+                        <LivePage />
                     </Route>
                     <Route path="/live/:id">
                         <SessionTracker />
                     </Route>
                     <Route path="/results">
-                        <SavedResults />
+                        <ResultsPage />
                     </Route>
                 </Switch>
             </BrowserRouter>

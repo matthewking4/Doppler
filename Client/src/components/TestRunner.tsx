@@ -6,12 +6,12 @@ import Chart from 'react-google-charts';
 
 type TestRunner = {
     loading: boolean;
-    error: boolean;
     activeSessionId: string | null;
     assetData: any;
     shouldEnd: boolean;
     endOfProfileInSec: any;
     maxBitrate: any;
+    error: boolean;
     // options: any;
     // series: any;
 };
@@ -26,9 +26,9 @@ class TestRunnerComponent extends React.Component<any, TestRunner> {
             endOfProfileInSec: null,
             shouldEnd: false,
             assetData: {},
-            error: false,
             loading: true,
             maxBitrate: '',
+            error: false,
         };
     }
 
@@ -115,7 +115,7 @@ class TestRunnerComponent extends React.Component<any, TestRunner> {
     getMaxBitrate() {
         return Math.max(
             this.state.assetData.sessionData &&
-                Math.max(...this.state.assetData.sessionData.map((data: any) => data.bitrate?.bitrateKbps || 0), 0),
+            Math.max(...this.state.assetData.sessionData.map((data: any) => data.bitrate?.bitrateKbps || 0), 0),
             Math.max(...this.props.networkProfile.data.map((data: any) => data.bandwidth || 0), 0),
         );
     }
@@ -128,112 +128,109 @@ class TestRunnerComponent extends React.Component<any, TestRunner> {
         });
     };
 
+    onError = () => {
+        this.setState({ error: true })
+    }
+
     render() {
         return (
             <div>
-                {this.state.error ? (
-                    <h1> No Live Asset Found </h1>
-                ) : this.state.loading ? (
+                {
+                    this.state.error ? (<h1 style={{ width: '100%', textAlign: 'center', color: 'white' }}> Error</h1>
+                    ) :
+                        this.state.loading ? <Spinner animation="grow" /> :
+                            <div>
+                                <h1 style={{ width: '100%', textAlign: 'center', color: 'white' }}> Active Session</h1>
+                                <Chart
+                                    chartType="AreaChart"
+                                    width="99%"
+                                    height="400px"
+                                    style={{ position: 'absolute' }}
+                                    data={this.adaptProfileData(this.props.networkProfile.data)}
+                                    options={{
+                                        interpolateNulls: true,
+                                        animation: {
+                                            duration: 800,
+                                            easing: 'out',
+                                            startup: true,
+                                        },
+                                        curveType: 'none',
+                                        legend: {
+                                            position: 'none',
+                                        },
+                                        backgroundColor: 'none',
+                                        vAxis: {
+                                            viewWindow: {
+                                                min: 0,
+                                                max: this.getMaxBitrate(),
+                                            },
+                                            title: 'Rate (Kbps)',
+                                            titleTextStyle: { color: '#2fc4e8' },
+                                            gridlines: {
+                                                color: '#444c57',
+                                            },
+                                            textStyle: {
+                                                color: '#2fc4e8',
+                                                fontName: 'helvetica',
+                                                fontSize: 15,
+                                            },
+                                            baseline: 1,
+                                            baselineColor: 'transparent',
+                                        },
+                                        pointSize: 5,
+                                        hAxis: {
+                                            title: 'Stream Position (Mins)',
+                                            titleTextStyle: { color: '#A2B5CB' },
+                                            gridlines: {
+                                                color: '#444c57',
+                                                count: 5,
+                                            },
+                                            textStyle: {
+                                                color: '#6d7b8b',
+                                                fontName: 'helvetica',
+                                                fontSize: 15,
+                                            },
+                                            viewWindow: {
+                                                min: 0,
+                                                max: '',
+                                            },
+                                        },
+                                        series: {
+                                            0: {
+                                                color: '#2fc4e8',
+                                            },
+                                            1: {
+                                                color: '#50e695',
+                                            },
+                                            2: {
+                                                color: '#F601FF',
+                                            },
+                                        },
+                                        chartArea: {
+                                            left: 80,
+                                            top: 30,
+                                            width: '92%',
+                                            height: '70%',
+                                        },
+                                        baseline: 1,
+                                        baselineColor: 'transparent',
+                                        tooltip: { isHtml: true },
+                                    }}
+                                    legendToggle
+                                />
+                                <Graph
+                                    onError={this.onError}
+                                    data={this.adaptThrottleData(this.state.assetData)}
+                                    maxTimespan={this.state.endOfProfileInSec / 60}
+                                    maxBitrate={this.getMaxBitrate()}
+                                />
+                            </div>
+                }
+                {/* {this.state.loading ? (
                     <Spinner animation="grow" />
                 ) : (
-                    <div>
-                        {this.state.shouldEnd && (
-                            <div>
-                                <h1 style={{ width: '100%', textAlign: 'center', color: 'white' }}>
-                                    {' '}
-                                    Your network profile has come to an end. Please save or stop your test run.
-                                </h1>
-                            </div>
-                        )}
-                        <Chart
-                            chartType="AreaChart"
-                            width="99%"
-                            height="400px"
-                            style={{ position: 'absolute' }}
-                            data={this.adaptProfileData(this.props.networkProfile.data)}
-                            options={{
-                                interpolateNulls: true,
-                                animation: {
-                                    duration: 800,
-                                    easing: 'out',
-                                    startup: true,
-                                },
-                                curveType: 'none',
-                                legend: {
-                                    position: 'none',
-                                },
-                                backgroundColor: 'none',
-                                vAxis: {
-                                    viewWindow: {
-                                        min: 0,
-                                        max: this.getMaxBitrate(),
-                                    },
-                                    title: 'Rate (Kbps)',
-                                    titleTextStyle: { color: '#2fc4e8' },
-                                    gridlines: {
-                                        color: '#444c57',
-                                    },
-                                    textStyle: {
-                                        color: '#2fc4e8',
-                                        fontName: 'helvetica',
-                                        fontSize: 15,
-                                    },
-                                    baseline: 1,
-                                    baselineColor: 'transparent',
-                                    // textPosition: 'none',
-                                },
-                                pointSize: 5,
-                                hAxis: {
-                                    title: 'Stream Position (Mins)',
-                                    titleTextStyle: { color: '#A2B5CB' },
-                                    gridlines: {
-                                        color: '#444c57',
-                                        count: 5,
-                                    },
-                                    textStyle: {
-                                        color: '#6d7b8b',
-                                        fontName: 'helvetica',
-                                        fontSize: 15,
-                                    },
-                                    viewWindow: {
-                                        min: 0,
-                                        max: '',
-                                    },
-                                    // textPosition: 'none',
-                                },
-                                series: {
-                                    0: {
-                                        color: '#2fc4e8',
-                                    },
-                                    1: {
-                                        color: '#50e695',
-                                    },
-                                    2: {
-                                        color: '#F601FF',
-                                    },
-                                },
-                                chartArea: {
-                                    left: 80,
-                                    top: 30,
-                                    width: '92%',
-                                    height: '70%',
-                                },
-                                baseline: 1,
-                                baselineColor: 'transparent',
-                                tooltip: { isHtml: true },
-                            }}
-                            legendToggle
-                        />
-                        <Graph
-                            data={this.adaptThrottleData(this.state.assetData)}
-                            title="Player Profiler"
-                            vTitle="Current Bandwith (KBPS)"
-                            hTitle="Position in Stream"
-                            maxTimespan={this.state.endOfProfileInSec / 60}
-                            maxBitrate={this.getMaxBitrate()}
-                        />
-                    </div>
-                )}
+                       
+                    )} */}
             </div>
         );
     }

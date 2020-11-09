@@ -2,9 +2,9 @@ import React from 'react';
 import { DropdownButton, Dropdown, Spinner } from 'react-bootstrap';
 import Chart from 'react-google-charts';
 import { TestRunner } from '../components/TestRunner';
-import { ThrottleManager } from '../throttle-manager';
+import { ThrottleManager } from '../services/throttle-manager';
 
-export class TestRunnerPage extends React.Component<any, any> {
+export class TestPage extends React.Component<any, any> {
 
     constructor(props: any) {
         // this.ThrottleManager = null;
@@ -88,136 +88,135 @@ export class TestRunnerPage extends React.Component<any, any> {
         return this.state.loading ? (
             <Spinner animation="grow" />
         ) : (
-            <div>
-                <div className="Side-bar">
-                    <hr/>
-                    <p>
-                        {' '}
-                        {this.state.selectedThrottleProfile.title
-                            ? this.state.selectedThrottleProfile.title
-                            : 'Please Select A Profile'}{' '}
-                    </p>
-                    {this.renderTestingProfiles()}
-                    <br />
-                    <p> Throttle Server Address </p>
-                    <input placeholder={'192.168.0.1'} onChange={(e) => this.setState({ serverAdd: e.target.value })} />
-                    <p> Throttle Server Port</p>
-                    <input placeholder={'1080'} onChange={(e) => this.setState({ serverPort: e.target.value })} />
-
-                    <p>Profile ID</p>
-                    <input
-                        placeholder={'john.doe@sky.uk'}
-                        onChange={(e) => this.setState({ accountId: e.target.value })}
-                    />
-                    {this.state.accountId && this.state.serverAdd && this.state.serverPort && (
-                        <button className="btn-primary" onClick={() => this.setState({ start: true })}>
-                            Start
-                        </button>
-                    )}
-                    {this.state.start && (
-                        <button className="btn-primary" onClick={() => this.setState({ shouldSave: true })}>
+                <div>
+                    <div className="Side-bar">
+                        <hr />
+                        <p>
                             {' '}
-                            Stop{' '}
-                        </button>
-                    )}
-                </div>
-                <div className="Main-content">
-                    {this.state.selectedThrottleProfile.title && (
-                        <React.Fragment>
-                            <h1 style={{width: '100%', textAlign: 'center', color: 'white'}}> Selected Profile</h1>
-                        <Chart
-                            chartType="AreaChart"
-                            width="99%"
-                            height="230px"
-                            data={this.adaptThrottleData(this.state.selectedThrottleProfile.data)}
-                            options={{
-                                interpolateNulls: true,
-                                animation: {
-                                    duration: 800,
-                                    easing: 'out',
-                                    startup: true,
-                                },
-                                curveType: 'none',
-                                legend: {
-                                    position: 'none',
-                                },
-                                backgroundColor: 'none',
-                                vAxis: {
-                                    viewWindow: {
-                                        min: 0,
-                                        max: '',
-                                    },
-                                    title: 'Rate (Kbps)',
-                                    titleTextStyle: { color: '#2fc4e8' },
-                                    gridlines: {
-                                        color: '#444c57',
-                                    },
-                                    textStyle: {
-                                        color: '#2fc4e8',
-                                        fontName: 'helvetica',
-                                        fontSize: 15,
-                                    },
-                                    baseline: 1,
-                                    baselineColor: 'transparent',
-                                },
-                                pointSize: 5,
-                                hAxis: {
-                                    title: 'Stream Position (Mins)',
-                                    titleTextStyle: { color: '#A2B5CB' },
-                                    gridlines: {
-                                        color: '#444c57',
-                                        count: 5,
-                                    },
-                                    textStyle: {
-                                        color: '#6d7b8b',
-                                        fontName: 'helvetica',
-                                        fontSize: 15,
-                                    },
-                                    viewWindow: {
-                                        min: 0,
-                                        max: '',
-                                    },
-                                },
-                                series: {
-                                    0: {
-                                        color: '#2fc4e8',
-                                    },
-                                    1: {
-                                        color: '#50e695',
-                                    },
-                                    2: {
-                                        color: '#F601FF',
-                                    },
-                                },
-                                chartArea: {
-                                    left: 80,
-                                    top: 30,
-                                    width: '92%',
-                                    height: '70%',
-                                },
-                                baseline: 1,
-                                baselineColor: 'transparent',
-                                tooltip: { isHtml: true },
-                            }}
-                            legendToggle
+                            {this.state.selectedThrottleProfile.title
+                                ? this.state.selectedThrottleProfile.title
+                                : 'Please Select A Profile'}{' '}
+                        </p>
+                        {this.renderTestingProfiles()}
+                        <br />
+                        <p> Throttle Server Address </p>
+                        <input placeholder={'192.168.0.1'} onChange={(e) => this.setState({ serverAdd: e.target.value })} />
+                        <p> Throttle Server Port</p>
+                        <input placeholder={'1080'} onChange={(e) => this.setState({ serverPort: e.target.value })} />
+
+                        <p>Profile ID</p>
+                        <input
+                            placeholder={'john.doe@sky.uk'}
+                            onChange={(e) => this.setState({ accountId: e.target.value })}
                         />
-                    </React.Fragment>
-                    )}
+                        {this.state.accountId && this.state.serverAdd && this.state.serverPort && (
+                            <button className="btn-primary" onClick={() => this.setState({ start: true })}>
+                                Start
+                            </button>
+                        )}
+                        {this.state.start && (
+                            <button className="btn-primary" onClick={() => this.setState({ shouldSave: true })}>
+                                {' '}
+                            Stop{' '}
+                            </button>
+                        )}
+                    </div>
+                    <div className="Main-content">
+                        {this.state.selectedThrottleProfile.title && (
+                            <React.Fragment>
+                                <h1 style={{ width: '100%', textAlign: 'center', color: 'white' }}> Selected Profile</h1>
+                                <Chart
+                                    chartType="AreaChart"
+                                    width="99%"
+                                    height="230px"
+                                    data={this.adaptThrottleData(this.state.selectedThrottleProfile.data)}
+                                    options={{
+                                        interpolateNulls: true,
+                                        animation: {
+                                            duration: 800,
+                                            easing: 'out',
+                                            startup: true,
+                                        },
+                                        curveType: 'none',
+                                        legend: {
+                                            position: 'none',
+                                        },
+                                        backgroundColor: 'none',
+                                        vAxis: {
+                                            viewWindow: {
+                                                min: 0,
+                                                max: '',
+                                            },
+                                            title: 'Rate (Kbps)',
+                                            titleTextStyle: { color: '#2fc4e8' },
+                                            gridlines: {
+                                                color: '#444c57',
+                                            },
+                                            textStyle: {
+                                                color: '#2fc4e8',
+                                                fontName: 'helvetica',
+                                                fontSize: 15,
+                                            },
+                                            baseline: 1,
+                                            baselineColor: 'transparent',
+                                        },
+                                        pointSize: 5,
+                                        hAxis: {
+                                            title: 'Stream Position (Mins)',
+                                            titleTextStyle: { color: '#A2B5CB' },
+                                            gridlines: {
+                                                color: '#444c57',
+                                                count: 5,
+                                            },
+                                            textStyle: {
+                                                color: '#6d7b8b',
+                                                fontName: 'helvetica',
+                                                fontSize: 15,
+                                            },
+                                            viewWindow: {
+                                                min: 0,
+                                                max: '',
+                                            },
+                                        },
+                                        series: {
+                                            0: {
+                                                color: '#2fc4e8',
+                                            },
+                                            1: {
+                                                color: '#50e695',
+                                            },
+                                            2: {
+                                                color: '#F601FF',
+                                            },
+                                        },
+                                        chartArea: {
+                                            left: 80,
+                                            top: 30,
+                                            width: '92%',
+                                            height: '70%',
+                                        },
+                                        baseline: 1,
+                                        baselineColor: 'transparent',
+                                        tooltip: { isHtml: true },
+                                    }}
+                                    legendToggle
+                                />
+                            </React.Fragment>
+                        )}
 
-                    {this.state.start && (
-                        <div style={{ position: 'relative' }}>
-                            <h1 style={{width: '100%', textAlign: 'center', color: 'white'}}> Active Session</h1>
-                            <TestRunner
-                                throttleManager={this.state.throttleManager}
-                                activeSessionId={this.state.accountId}
-                                networkProfile={this.state.selectedThrottleProfile}
-                                shouldSave={this.state.shouldSave}
-                            />
-                        </div>
-                    )}
-                </div>
+                        {this.state.start && (
+                            <div style={{ position: 'relative' }}>
+                                <TestRunner
+                                    throttleManager={this.state.throttleManager}
+                                    activeSessionId={this.state.accountId}
+                                    networkProfile={this.state.selectedThrottleProfile}
+                                    shouldSave={this.state.shouldSave}
+                                />
+                            </div>
+                        )}
+                    </div>
 
-                {/* <Chart
+                    {/* <Chart
                                 chartType="AreaChart"
                                 width="99%"
                                 height="400px"
@@ -295,7 +294,7 @@ export class TestRunnerPage extends React.Component<any, any> {
                                 ]}
                                 legendToggle
                             /> */}
-                {/* 
+                    {/* 
                 {this.state.selectedThrottleProfile.title && (
                     <div>
                        
@@ -399,7 +398,7 @@ export class TestRunnerPage extends React.Component<any, any> {
                         )}
                     </div>
                 )} */}
-            </div>
-        );
+                </div>
+            );
     }
 }

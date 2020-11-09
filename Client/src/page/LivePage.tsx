@@ -1,22 +1,24 @@
 import React from 'react';
 import { Spinner, Table } from 'react-bootstrap';
-import { Results } from '../components/results';
+import { Redirect } from 'react-router-dom';
 
-export class SavedResults extends React.Component<any, any> {
+type LiveSessionState = { activeSessions: any; loading: boolean; selectedSessionId: string | null };
+
+export class LivePage extends React.Component<any, LiveSessionState> {
     constructor(props: any) {
         super(props);
         this.state = {
-            results: [],
+            activeSessions: [],
             loading: true,
-            selectedAsset: null,
+            selectedSessionId: null,
         };
     }
 
     componentDidMount() {
-        fetch('http://localhost:8443/session/results')
+        fetch('http://localhost:8443/session/active')
             .then((response) => response.json())
             .then((response) => {
-                this.setState({ loading: false, results: response });
+                this.setState({ loading: false, activeSessions: response });
             });
     }
 
@@ -24,34 +26,31 @@ export class SavedResults extends React.Component<any, any> {
         return this.state.loading ? (
             <Spinner animation="grow" />
         ) : (
-            <div>
-                {!this.state.selectedAsset ? (
+                <div>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Email</th>
+                                <th>Account ID</th>
                                 <th>Asset</th>
                                 <th>Player</th>
                                 <th>Device</th>
-                                <th>Date</th>
+                                <th>Email</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.results.map((asset: any) => (
-                                <tr onClick={() => this.setState({ selectedAsset: asset })}>
-                                    <td>{asset?.email}</td>
+                            {this.state.activeSessions.map((asset: any) => (
+                                <tr onClick={() => this.setState({ selectedSessionId: asset?.accountId })}>
+                                    <td>{asset?.accountId}</td>
                                     <td>{asset?.assetName}</td>
                                     <td>{asset?.playerName}</td>
                                     <td>{asset?.deviceName}</td>
-                                    <td>{asset?.date}</td>
+                                    <td>{asset?.email}</td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
-                ) : (
-                    <Results asset={this.state.selectedAsset} />
-                )}
-            </div>
-        );
+                    {this.state.selectedSessionId ? <Redirect to={`live/${this.state.selectedSessionId}`} /> : null}
+                </div>
+            );
     }
 }
